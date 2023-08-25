@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Blog</title>
+</head>
+<body>
+    <h1>Home Page</h1>
+        <button><p>Add New Post</p></button>
+    <% if(locals.blogPosts) { %>
+        <% blogPosts.map((post)=> { %>
+            <div class="post">
+                <h2><%= post.title %></h2>
+                <p><%= post.content %></p>
+                <p><%= post.author %></p>
+                <p><%= post.date %></p>
+            </div>
+        <% })} %>
+</body>
+</html>
