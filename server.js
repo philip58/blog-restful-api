@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
+import { error } from "console";
 
 const app = express();
 const port = 3000;
@@ -22,6 +23,20 @@ app.get("/", async (req,res)=> {
     } catch (error) {
         res.status(500).send(error.message);
     }
+});
+
+app.get("/postEntry", (req,res)=> {
+    res.render("postEntry.ejs", {header: "Create New Post", button: "Submit New Post"});
+});
+
+app.post("/post", async (req,res)=>{
+    try{
+        const result = await axios.post(`${apiUrl}/posts`,req.body);
+        console.log(result.data);
+        res.redirect("/");
+    } catch (error) {
+        res.status(500).send(error.message)
+    };
 });
 
 app.listen(port, ()=>{

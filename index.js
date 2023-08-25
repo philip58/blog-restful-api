@@ -14,7 +14,6 @@ mongoose.connect("mongodb://127.0.0.1:27017/blogDB");
 
 //Creat mongoose schema
 const postSchema = {
-    id: Number,
     title: String,
     content: String,
     author: String,
@@ -29,7 +28,6 @@ app.get("/posts", (req,res)=> {
     Post.find().then((blogPosts)=>{
         if(blogPosts.length===0){
             const blogPost1 = new Post ({
-                id: 1,
                 title: "Blog Post 1",
                 content: "This is the first blog post.",
                 author: "Post 1 Author",
@@ -41,6 +39,22 @@ app.get("/posts", (req,res)=> {
     }).catch((err)=>{
         console.log(err);
     });
+});
+
+app.post("/posts", (req,res)=> {
+    const newPost = new Post ({
+        title: req.body.title,
+        content: req.body.content,
+        author: req.body.author,
+        date: new Date().toLocaleDateString()
+    });
+
+    newPost.save().then(()=>{
+        res.json(newPost);
+    }).catch((err)=>{
+        console.log(err);
+    });
+    
 });
 
 
