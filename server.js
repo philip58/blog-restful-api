@@ -1,7 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
-import { error } from "console";
 
 const app = express();
 const port = 3000;
@@ -57,6 +56,32 @@ app.get("/post/:id", async (req,res)=>{
             header: "Edit Existing Post",
             post: result.data,
             button: "Submit Edit(s)"
+        });
+    } catch (error) {
+        res.status(500).send(error.message)
+    };
+});
+
+app.get("/post/comment/:id", async (req,res)=>{
+    try{
+        const result = await axios.get(`${apiUrl}/posts/${req.params.id}`);
+        console.log(result.data);
+        res.render("post.ejs",{
+            viewPost: result.data
+        });
+    } catch (error) {
+        res.status(500).send(error.message)
+    };
+});
+
+app.get("/comment/:id", async (req,res)=>{
+    try{
+        const result = await axios.get(`${apiUrl}/posts/${req.params.id}`);
+        console.log(result.data);
+        res.render("postEntry.ejs",{
+            header: "Comment On Post",
+            viewPost: result.data,
+            button: "Submit Comment"
         });
     } catch (error) {
         res.status(500).send(error.message)

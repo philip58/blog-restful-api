@@ -1,16 +1,23 @@
 <h1><%= header %></h1>
-<% if(!locals.post) {%>
-    <form action="/post" method="post" id="newPost">
-        <input type="text" name="title" placeholder="Title">
-        <textarea name="content" placeholder="Content" cols="30" rows="10"></textarea>
-        <input type="text" name="author" placeholder="Author">
+<% if(locals.post) {%>
+    <form action="/patch/<%= post._id %>" method="post" id="editPost">
+        <input type="text" name="title" value="<%= post.title %>" required></input>
+        <textarea name="content" cols="30" rows="10" required> <%= post.content %></textarea>
+        <input type="text" name="author" value="<%= post.author %>" required></input>
+        <button type="submit"><%= button %></button>
+    </form>
+<% } else if(locals.viewPost){ %>
+    <form action="/comment/<%= viewPost._id %>" method="post" id="commentPost">
+        <input type="text" name="title" placeholder="Title" required></input>
+        <textarea name="content" placeholder="Content" cols="30" rows="10" required></textarea>
+        <input type="text" name="author" placeholder="Author" required></input>
         <button type="submit"><%= button %></button>
     </form>
 <% } else {%>
-    <form action="/patch/<%= post._id %>" method="post" id="editPost">
-        <input type="text" name="title" value="<%= post.title %>" placeholder="Title"></input>
-        <textarea name="content" placeholder="Content" cols="30" rows="10"> <%= post.content %></textarea>
-        <input type="text" name="author" value="<%= post.author %>" placeholder="Author"></input>
+    <form action="/post" method="post" id="newPost">
+        <input type="text" name="title" placeholder="Title" required>
+        <textarea name="content" placeholder="Content" cols="30" rows="10" required></textarea>
+        <input type="text" name="author" placeholder="Author" required>
         <button type="submit"><%= button %></button>
     </form>
 <% } %>

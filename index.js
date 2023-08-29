@@ -12,16 +12,28 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Connect database
 mongoose.connect("mongodb://127.0.0.1:27017/blogDB");
 
-//Creat mongoose schema
-const postSchema = {
+//create mongoose comment schema
+const commentSchema = {
     title: String,
     content: String,
     author: String,
     date: String
-}
+};
 
-//Create mongoose model
+//Creat mongoose post schema
+const postSchema = {
+    title: String,
+    content: String,
+    author: String,
+    date: String,
+    comments: [commentSchema]
+};
+
+//Create mongoose post model
 const Post = mongoose.model("Post",postSchema);
+
+//Create mongoose comment model
+const Comment = mongoose.model("Comment",commentSchema);
 
 //Send all posts to server, if empty put in placeholder post
 app.get("/posts", (req,res)=> {
@@ -31,7 +43,8 @@ app.get("/posts", (req,res)=> {
                 title: "Blog Post 1",
                 content: "This is the first blog post.",
                 author: "Post 1 Author",
-                date: new Date().toLocaleDateString()
+                date: new Date().toLocaleDateString(),
+                comments: []
             });
             blogPost1.save();
         }
