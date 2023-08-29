@@ -49,6 +49,31 @@ app.get("/delete/:id", async (req,res)=>{
     };
 });
 
+app.get("/post/:id", async (req,res)=>{
+    try{
+        const result = await axios.get(`${apiUrl}/posts/${req.params.id}`);
+        console.log(result.data);
+        res.render("postEntry.ejs",{
+            header: "Edit Existing Post",
+            post: result.data,
+            button: "Submit Edit(s)"
+        });
+    } catch (error) {
+        res.status(500).send(error.message)
+    };
+});
+
+app.post("/patch/:id", async (req,res)=>{
+    try{
+        const result = await axios.patch(`${apiUrl}/patch/${req.params.id}`,req.body);
+        console.log(result.data);
+        res.redirect("/");
+    } catch (error) {
+        res.status(500).send(error.message)
+    };
+});
+
+
 app.listen(port, ()=>{
     console.log(`Server started on port ${port}`);
 });

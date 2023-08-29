@@ -1,7 +1,16 @@
 <h1><%= header %></h1>
-<form action="/post" method="post">
-    <input type="text" name="title" placeholder="Title">
-    <textarea name="content" placeholder="Content" cols="30" rows="10"></textarea>
-    <input type="text" name="author" placeholder="Author">
-    <button type="submit"><%= button %></button>
-</form>
+<% if(!locals.post) {%>
+    <form action="/post" method="post" id="newPost">
+        <input type="text" name="title" placeholder="Title">
+        <textarea name="content" placeholder="Content" cols="30" rows="10"></textarea>
+        <input type="text" name="author" placeholder="Author">
+        <button type="submit"><%= button %></button>
+    </form>
+<% } else {%>
+    <form action="/patch/<%= post._id %>" method="post" id="editPost">
+        <input type="text" name="title" value="<%= post.title %>" placeholder="Title"></input>
+        <textarea name="content" placeholder="Content" cols="30" rows="10"> <%= post.content %></textarea>
+        <input type="text" name="author" value="<%= post.author %>" placeholder="Author"></input>
+        <button type="submit"><%= button %></button>
+    </form>
+<% } %>

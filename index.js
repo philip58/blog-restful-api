@@ -41,6 +41,14 @@ app.get("/posts", (req,res)=> {
     });
 });
 
+app.get("/posts/:id", (req,res)=> {
+    Post.findById({_id: req.params.id}).then((blogPost)=>{
+        res.json(blogPost);
+    }).catch((err)=>{
+        console.log(err);
+    });
+});
+
 app.post("/posts", (req,res)=> {
     const newPost = new Post ({
         title: req.body.title,
@@ -50,6 +58,7 @@ app.post("/posts", (req,res)=> {
     });
 
     newPost.save().then(()=>{
+        console.log("New post posted");
         res.json(newPost);
     }).catch((err)=>{
         console.log(err);
@@ -66,6 +75,27 @@ app.delete("/delete/:id", (req,res)=> {
     res.json({message: `Post of id: ${req.params.id} has been deleted.`});
 });
 
+app.patch("/patch/:id", (req,res)=>{
+    Post.findByIdAndUpdate({_id: req.params.id}).then((updatedPost)=>{
+        if(req.body.title){
+            updatedPost.title = req.body.title;
+        } 
+        if(req.body.content){
+            updatedPost.content = req.body.content;
+        } 
+        if (req.body.author){
+            updatedPost.author = req.body.author;
+        } 
+        updatedPost.save().then(()=>{
+            console.log("Post updated.");
+            res.json(updatedPost);
+        }).catch((err)=>{
+            console.log(err);
+        });
+    }).catch((err)=>{
+        console.log(err);
+    });
+})
 
 app.listen(port, ()=>{
     console.log(`Server started on port ${port}`);
