@@ -57,6 +57,15 @@ app.post("/posts", (req,res)=> {
     
 });
 
+app.delete("/delete/:id", (req,res)=> {
+    Post.deleteOne({_id: req.params.id}).then(()=>{
+        console.log("Post deleted.");
+    }).catch((err)=>{
+        console.log(err);
+    });
+    res.json({message: `Post of id: ${req.params.id} has been deleted.`});
+});
+
 
 app.listen(port, ()=>{
     console.log(`Server started on port ${port}`);
