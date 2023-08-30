@@ -108,7 +108,25 @@ app.patch("/patch/:id", (req,res)=>{
     }).catch((err)=>{
         console.log(err);
     });
-})
+});
+
+app.post("/comment/:id", (req,res)=>{
+    const newComment = {
+        title: req.body.title,
+        content: req.body.content,
+        author: req.body.author,
+        date: new Date().toLocaleDateString()
+    };
+
+    Post.findById({_id: req.params.id}).then((foundPost)=>{
+        foundPost.comments.push(newComment);
+        foundPost.save();
+        res.json(newComment);
+    }).catch((err)=>{
+        console.log(err);
+    });
+
+});
 
 app.listen(port, ()=>{
     console.log(`Server started on port ${port}`);
