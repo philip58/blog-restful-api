@@ -1,16 +1,44 @@
-<h1> View And Comment </h1>
-<a href="/">Home Page</a>
-<h2><%= viewPost.title %></h2>
-<p><%= viewPost.content %></p>
-<p><%= viewPost.author %></p>
-<p><%= viewPost.date %></p>
-<a href="/comment/<%= viewPost._id %>"> Comment</a>
+<!-- header partial -->
+<%-include("header.ejs")  %>
+<div class="bd-example m-0 mb-5 border-0">
+    <div class="card text-center">
+      <div class="card-header">
+        By: <%= viewPost.author %>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><%= viewPost.title %></h5>
+        <p class="card-text"><%= viewPost.content %></p>
+        <a href="/comment/<%= viewPost._id %>" class="btn btn-info">Comment</a>
+        </div>
+      <div class="card-footer text-body-secondary">
+        <%= viewPost.date %> 
+      </div>
+    </div>
+    </div>
 
-<h1>Comments ...</h1>
+<h1 class="postComments mb-5">
+    <% if(locals.viewPost.comments.length===0) {%> 
+        No Comments...
+    <% } else {%>
+        Comments:
+        <% } %>
+    </h1>
 <% viewPost.comments.forEach((post) => { %>
-    <h2><%= post.title %></h2>
-    <p><%= post.content %></p>
-    <p><%= post.author %></p>
-    <p><%= post.date %></p>
-    <a href="/delete/comment/<%= viewPost._id %>/<%= post._id %>">Delete</a>
+    <div class="bd-example m-0 mb-5 border-0">
+        <div class="card text-center">
+          <div class="card-header">
+            By: <%= post.author %>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title"><%= post.title %></h5>
+            <p class="card-text"><%= post.content %></p>
+            <a href="/delete/comment/<%= viewPost._id %>/<%= post._id %>" class="btn btn-danger">Delete</a>
+        </div>
+          <div class="card-footer text-body-secondary">
+            <%= post.date %> 
+          </div>
+        </div>
+        </div>
 <% }); %>
+<!-- footer partial -->
+<%-include("footer.ejs") %>

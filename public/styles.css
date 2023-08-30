@@ -1,0 +1,14 @@
+
+body{
+    background-color: #000000;
+}
+
+.bold{
+    font-weight: 700;
+    color: white;
+}
+
+.postComments{
+    display: flex;
+    justify-content: center;
+}

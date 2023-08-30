@@ -18,16 +18,19 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.get("/", async (req,res)=> {
     try{
         const result = await axios.get(`${apiUrl}/posts`);
-        res.render("index.ejs", {blogPosts: result.data});
+        res.render("index.ejs", {blogPosts: result.data, 
+        header: "Home Page"});
     } catch (error) {
         res.status(500).send(error.message);
     }
 });
 
+//get the entry page to create a new blog post
 app.get("/postEntry", (req,res)=> {
     res.render("postEntry.ejs", {header: "Create New Post", button: "Submit New Post"});
 });
 
+//post a new blog post and redirect to the home page where it is displayed
 app.post("/post", async (req,res)=>{
     try{
         const result = await axios.post(`${apiUrl}/posts`,req.body);
@@ -38,6 +41,7 @@ app.post("/post", async (req,res)=>{
     };
 });
 
+//delete a specific post and redirect to home page 
 app.get("/delete/:id", async (req,res)=>{
     try{
         const result = await axios.delete(`${apiUrl}/delete/${req.params.id}`);
@@ -48,6 +52,7 @@ app.get("/delete/:id", async (req,res)=>{
     };
 });
 
+//render the entry page with the existing post's data for editting
 app.get("/post/:id", async (req,res)=>{
     try{
         const result = await axios.get(`${apiUrl}/posts/${req.params.id}`);
@@ -62,11 +67,13 @@ app.get("/post/:id", async (req,res)=>{
     };
 });
 
+//render a single post on the page with its respective comments from the comments array
 app.get("/post/comment/:id", async (req,res)=>{
     try{
         const result = await axios.get(`${apiUrl}/posts/${req.params.id}`);
         console.log(result.data);
         res.render("post.ejs",{
+            header: "View and Comment",
             viewPost: result.data
         });
     } catch (error) {
@@ -74,6 +81,7 @@ app.get("/post/comment/:id", async (req,res)=>{
     };
 });
 
+//render the entry page to add a new comment under a post
 app.get("/comment/:id", async (req,res)=>{
     try{
         const result = await axios.get(`${apiUrl}/posts/${req.params.id}`);
@@ -88,6 +96,7 @@ app.get("/comment/:id", async (req,res)=>{
     };
 });
 
+//patch/edit an existing post with the data in the request and change what was entered
 app.post("/patch/:id", async (req,res)=>{
     try{
         const result = await axios.patch(`${apiUrl}/patch/${req.params.id}`,req.body);
@@ -98,6 +107,7 @@ app.post("/patch/:id", async (req,res)=>{
     };
 });
 
+//post a new comment under a blog post 
 app.post("/comment/:id", async (req,res)=>{
     try{
         const result = await axios.post(`${apiUrl}/comment/${req.params.id}`,req.body);
@@ -108,6 +118,7 @@ app.post("/comment/:id", async (req,res)=>{
     }
 });
 
+//delete a comment from a post 
 app.get("/delete/comment/:id/:commentId", async (req,res)=>{
     try{
         const result = await axios.delete(`${apiUrl}/delete/comment/${req.params.id}/${req.params.commentId}`);

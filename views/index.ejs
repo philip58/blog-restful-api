@@ -1,25 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Blog</title>
-</head>
+<!-- header partial -->
+<%-include("header.ejs") %>
 <body>
-    <h1>Home Page</h1>
-        <a href="/postEntry">Add New Post</a>
+    <!-- all posts displayed -->
     <% if(locals.blogPosts) { %>
         <% blogPosts.map((post)=> { %>
-            <div class="post">
-                <h2><%= post.title %></h2>
-                <p><%= post.content %></p>
-                <p><%= post.author %></p>
-                <p><%= post.date %></p>
-                <a href="/post/comment/<%= post._id %>">View And Comment</a> <br>
-                <a href="/post/<%= post._id %>"id=<%= post._id %>> Edit </a> <br>
-                <a href="/delete/<%= post._id %>"id=<%= post._id %>> Delete </a>
-            </div>
+            <div class="bd-example m-0 mb-5 border-0">
+                <div class="card text-center">
+                  <div class="card-header">
+                    By: <%= post.author %>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title"><%= post.title %></h5>
+                    <p class="card-text"><%= post.content %></p>
+                    <p class="card-text"><%= post.comments.length %> Comments</p>
+                    <a href="/post/comment/<%= post._id %>" class="btn btn-info">View And Comment</a>
+                    <a href="/post/<%= post._id %>" class="btn btn-warning">Edit</a>
+                    <a href="/delete/<%= post._id %>" class="btn btn-danger">Delete</a>
+                  </div>
+                  <div class="card-footer text-body-secondary">
+                    <%= post.date %> 
+                  </div>
+                </div>
+                </div>
         <% })} %>
+<!-- footer partial -->
+<%-include("footer.ejs") %>
 </body>
-</html>

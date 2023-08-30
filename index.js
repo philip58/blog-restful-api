@@ -36,7 +36,7 @@ const Post = mongoose.model("Post",postSchema);
 //Create mongoose comment model
 const Comment = mongoose.model("Comment",commentSchema);
 
-//Send all posts to server, if empty put in placeholder post
+//Send all posts from database to server, if empty put in placeholder post
 app.get("/posts", (req,res)=> {
     Post.find().then((blogPosts)=>{
         if(blogPosts.length===0){
@@ -55,6 +55,7 @@ app.get("/posts", (req,res)=> {
     });
 });
 
+//get a specific post from database 
 app.get("/posts/:id", (req,res)=> {
     Post.findById({_id: req.params.id}).then((blogPost)=>{
         res.json(blogPost);
@@ -63,6 +64,7 @@ app.get("/posts/:id", (req,res)=> {
     });
 });
 
+//post a new blog post to database
 app.post("/posts", (req,res)=> {
     const newPost = new Post ({
         title: req.body.title,
@@ -80,6 +82,7 @@ app.post("/posts", (req,res)=> {
     
 });
 
+//delete a post from database
 app.delete("/delete/:id", (req,res)=> {
     Post.deleteOne({_id: req.params.id}).then(()=>{
         console.log("Post deleted.");
@@ -89,6 +92,7 @@ app.delete("/delete/:id", (req,res)=> {
     res.json({message: `Post of id: ${req.params.id} has been deleted.`});
 });
 
+//edit a post and keep existing data intact if not modified
 app.patch("/patch/:id", (req,res)=>{
     Post.findByIdAndUpdate({_id: req.params.id}).then((updatedPost)=>{
         if(req.body.title){
@@ -111,6 +115,7 @@ app.patch("/patch/:id", (req,res)=>{
     });
 });
 
+//post a new comment to the database under a post which hold the comment in an array 
 app.post("/comment/:id", (req,res)=>{
     const newComment = {
         title: req.body.title,
@@ -130,17 +135,8 @@ app.post("/comment/:id", (req,res)=>{
 
 });
 
+//delete a comment from the post's array and from the database
 app.delete("/delete/comment/:id/:commentId", (req,res)=> {
-    // Comment.findById({_id: req.params.id}).then((foundComment)=>{
-    //     Post.updateOne({_id: foundComment.postId},{$pull: {comments: req.params.id}}).then(()=>{
-    //         res.json({message: `Comment of id: ${req.params.id} has been deleted.`});
-    //     }).catch((err)=>{
-    //         console.log(err);
-    //     });
-    // }).catch((err)=>{
-    //     console.log(err);
-    // });
-
     Post.updateOne({_id: req.params.id},{$pull: {comments: {_id: req.params.commentId}}}).then(()=>{
         res.json({message: `Comment of id: ${req.params.commentId} has been deleted.`});
     }).catch((err)=>{

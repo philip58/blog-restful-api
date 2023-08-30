@@ -1,23 +1,56 @@
-<h1><%= header %></h1>
+<!-- header partial -->
+<%-include("header.ejs") %>
+<!-- form for patching an existing post -->
 <% if(locals.post) {%>
-    <form action="/patch/<%= post._id %>" method="post" id="editPost">
-        <input type="text" name="title" value="<%= post.title %>" required></input>
-        <textarea name="content" cols="30" rows="10" required> <%= post.content %></textarea>
-        <input type="text" name="author" value="<%= post.author %>" required></input>
-        <button type="submit"><%= button %></button>
+    <form class="bd-example m-0 border-0" action="/patch/<%= post._id %>" method="post" id="newPost">
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input type="text" name="title" value="<%= post.title %>" class="form-control" id="exampleFormControlInput1" placeholder="Title" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Content</label>
+          <textarea name="content" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Content" required> <%= post.content %> </textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Author</label>
+            <input type="text" name="author" value="<%= post.author %>" class="form-control" id="exampleFormControlInput1" placeholder="Author" required>
+          </div>
+          <button class="btn btn-success" type="submit"><%= button %></button>
     </form>
+    <!-- form for posting a new comment on a post -->
 <% } else if(locals.viewPost){ %>
-    <form action="/comment/<%= viewPost._id %>" method="post" id="commentPost">
-        <input type="text" name="title" placeholder="Title" required></input>
-        <textarea name="content" placeholder="Content" cols="30" rows="10" required></textarea>
-        <input type="text" name="author" placeholder="Author" required></input>
-        <button type="submit"><%= button %></button>
+    <form class="bd-example m-0 border-0" action="/comment/<%= viewPost._id %>" method="post" id="newPost">
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="Title" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Content</label>
+          <textarea name="content" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Content" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Author</label>
+            <input type="text" name="author" class="form-control" id="exampleFormControlInput1" placeholder="Author" required>
+          </div>
+          <button class="btn btn-success" type="submit"><%= button %></button>
     </form>
+    <!-- form for creating a new post and posting it -->
 <% } else {%>
-    <form action="/post" method="post" id="newPost">
-        <input type="text" name="title" placeholder="Title" required>
-        <textarea name="content" placeholder="Content" cols="30" rows="10" required></textarea>
-        <input type="text" name="author" placeholder="Author" required>
-        <button type="submit"><%= button %></button>
+    <form class="bd-example m-0 border-0" action="/post" method="post" id="newPost">
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="Title" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Content</label>
+          <textarea name="content" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Content" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Author</label>
+            <input type="text" name="author" class="form-control" id="exampleFormControlInput1" placeholder="Author" required>
+          </div>
+          <button class="btn btn-success" type="submit"><%= button %></button>
     </form>
 <% } %>
+<!-- footer partial -->
+<%-include("footer.ejs") %>
