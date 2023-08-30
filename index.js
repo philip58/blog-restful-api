@@ -17,7 +17,8 @@ const commentSchema = {
     title: String,
     content: String,
     author: String,
-    date: String
+    date: String,
+    postId: String
 };
 
 //Creat mongoose post schema
@@ -119,6 +120,7 @@ app.post("/comment/:id", (req,res)=>{
     };
 
     Post.findById({_id: req.params.id}).then((foundPost)=>{
+        newComment.postId = foundPost._id;
         foundPost.comments.push(newComment);
         foundPost.save();
         res.json(newComment);
@@ -126,6 +128,24 @@ app.post("/comment/:id", (req,res)=>{
         console.log(err);
     });
 
+});
+
+app.delete("/delete/comment/:id/:commentId", (req,res)=> {
+    // Comment.findById({_id: req.params.id}).then((foundComment)=>{
+    //     Post.updateOne({_id: foundComment.postId},{$pull: {comments: req.params.id}}).then(()=>{
+    //         res.json({message: `Comment of id: ${req.params.id} has been deleted.`});
+    //     }).catch((err)=>{
+    //         console.log(err);
+    //     });
+    // }).catch((err)=>{
+    //     console.log(err);
+    // });
+
+    Post.updateOne({_id: req.params.id},{$pull: {comments: {_id: req.params.commentId}}}).then(()=>{
+        res.json({message: `Comment of id: ${req.params.commentId} has been deleted.`});
+    }).catch((err)=>{
+        console.log(err);
+    });
 });
 
 app.listen(port, ()=>{
