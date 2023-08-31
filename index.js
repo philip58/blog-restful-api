@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import dotenv from "dotenv"
 
 const app = express();
 const port = 4000;
@@ -9,8 +10,10 @@ const port = 4000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+dotenv.config();
+
 //Connect database
-mongoose.connect("mongodb://127.0.0.1:27017/blogDB");
+mongoose.connect(`${process.env.MONGO_URI}`);
 
 //create mongoose comment schema
 const commentSchema = {
